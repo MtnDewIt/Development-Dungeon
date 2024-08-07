@@ -32,6 +32,13 @@ public class ObjectStructureHandler : JsonConverter
 
         Type objType = value.GetType();
 
+        if (objType.IsEnum)
+        {
+            writer.WriteValue(value.ToString());
+            
+            return;
+        }
+
         if (objType.IsPrimitive || objType == typeof(string) || objType.IsValueType)
         {
             writer.WriteValue(value);
