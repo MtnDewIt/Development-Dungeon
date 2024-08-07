@@ -5,42 +5,6 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-public class TestClass
-{
-    public int Id;
-    public string Name;
-    public DateTime DateCreated;
-    public double MyWillToLive;
-
-    public string[] ArrayStrings;
-
-    public TestObjectClass[] ArrayObjects;
-
-    public TestObjectClass TestObject;
-    public List<string> NestedStrings;
-    public List<TestNestedClass> NestedObjects;
-}
-
-public class TestNestedClass
-{
-    public string Description;
-    public int Number;
-
-    public List<TestNestedNestedClass> NestedObjects;
-}
-
-public class TestNestedNestedClass
-{
-    public string Description;
-    public int Number;
-}
-
-public class TestObjectClass
-{
-    public string Name;
-    public List<TestNestedNestedClass> NestedObjects;
-}
-
 public class Program
 {
     public static void Main()
@@ -51,41 +15,43 @@ public class Program
             Name = "Testing1",
             DateCreated = DateTime.Now,
             MyWillToLive = 69.420,
+            Enum = TestClass.TestEnum.Test3,
+            EnumFlags = TestClass.TestEnumFlags.Test1 | TestClass.TestEnumFlags.Test2 | TestClass.TestEnumFlags.Test3 | TestClass.TestEnumFlags.Test4 | TestClass.TestEnumFlags.Test5,
             ArrayStrings = new string[] 
             { 
                 "String1", 
                 "String2", 
             },
-            ArrayObjects = new TestObjectClass[]
+            ArrayObjects = new TestClass.TestObjectClass[]
             {
-                new TestObjectClass
+                new TestClass.TestObjectClass
                 {
                     Name = "TestObject1",
-                    NestedObjects = new List<TestNestedNestedClass>
+                    NestedObjects = new List<TestClass.TestNestedClass.TestNestedNestedClass>
                     {
-                        new TestNestedNestedClass
+                        new TestClass.TestNestedClass.TestNestedNestedClass
                         {
                             Description = "TestObject1.1",
                             Number = 11
                         },
-                        new TestNestedNestedClass
+                        new TestClass.TestNestedClass.TestNestedNestedClass
                         {
                             Description = "TestObject1.2",
                             Number = 12
                         }
                     }
                 },
-                new TestObjectClass
+                new TestClass.TestObjectClass
                 {
                     Name = "TestObject2",
-                    NestedObjects = new List<TestNestedNestedClass>
+                    NestedObjects = new List<TestClass.TestNestedClass.TestNestedNestedClass>
                     {
-                        new TestNestedNestedClass
+                        new TestClass.TestNestedClass.TestNestedNestedClass
                         {
                             Description = "TestObject2.1",
                             Number = 21
                         },
-                        new TestNestedNestedClass
+                        new TestClass.TestNestedClass.TestNestedNestedClass
                         {
                             Description = "TestObject2.2",
                             Number = 22
@@ -93,17 +59,17 @@ public class Program
                     }
                 }
             },
-            TestObject = new TestObjectClass
+            TestObject = new TestClass.TestObjectClass
             {
                 Name = "TestObject1",
-                NestedObjects = new List<TestNestedNestedClass>
+                NestedObjects = new List<TestClass.TestNestedClass.TestNestedNestedClass>
                 {
-                    new TestNestedNestedClass
+                    new TestClass.TestNestedClass.TestNestedNestedClass
                     {
                         Description = "TestObject1.1",
                         Number = 11
                     },
-                    new TestNestedNestedClass
+                    new TestClass.TestNestedClass.TestNestedNestedClass
                     {
                         Description = "TestObject1.2",
                         Number = 12
@@ -115,40 +81,40 @@ public class Program
                 "Nested1", 
                 "Nested2", 
             },
-            NestedObjects = new List<TestNestedClass>
+            NestedObjects = new List<TestClass.TestNestedClass>
             {
-                new TestNestedClass 
+                new TestClass.TestNestedClass 
                 { 
                     Description = "Nested1", 
                     Number = 1,
-                    NestedObjects = new List<TestNestedNestedClass>
+                    NestedObjects = new List<TestClass.TestNestedClass.TestNestedNestedClass>
                     {
-                        new TestNestedNestedClass 
+                        new TestClass.TestNestedClass.TestNestedNestedClass 
                         { 
                             Description = "Nested1.1", 
                             Number = 11,
                             
                         },
-                        new TestNestedNestedClass 
+                        new TestClass.TestNestedClass.TestNestedNestedClass 
                         { 
                             Description = "Nested1.2", 
                             Number = 12,
                         },
                     }
                 },
-                new TestNestedClass 
+                new TestClass.TestNestedClass 
                 { 
                     Description = "Nested2", 
                     Number = 2,
-                    NestedObjects = new List<TestNestedNestedClass>
+                    NestedObjects = new List<TestClass.TestNestedClass.TestNestedNestedClass>
                     {
-                        new TestNestedNestedClass 
+                        new TestClass.TestNestedClass.TestNestedNestedClass 
                         { 
                             Description = "Nested2.1", 
                             Number = 21,
                             
                         },
-                        new TestNestedNestedClass 
+                        new TestClass.TestNestedClass.TestNestedNestedClass 
                         { 
                             Description = "Nested2.2", 
                             Number = 22,
