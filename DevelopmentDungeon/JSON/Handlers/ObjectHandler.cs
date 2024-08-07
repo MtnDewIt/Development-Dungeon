@@ -13,7 +13,8 @@ public class ObjectHandler
         {
             Converters = new List<JsonConverter> 
             { 
-                new ObjectStructureHandler(typeof(int))
+                new ObjectStructureHandler(typeof(int)),
+                new EnumHandler(),
             },
             Formatting = Formatting.Indented,
         };
