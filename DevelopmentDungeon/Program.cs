@@ -141,11 +141,11 @@ public class Program
 
 public class CustomJsonConverter : JsonConverter
 {
-    private readonly Type _typeToExclude;
+    private Type TypeToExclude;
 
     public CustomJsonConverter(Type typeToExclude)
     {
-        _typeToExclude = typeToExclude;
+        TypeToExclude = typeToExclude;
     }
 
     public override bool CanConvert(Type objectType)
@@ -182,7 +182,7 @@ public class CustomJsonConverter : JsonConverter
 
             foreach (var item in (IEnumerable)value)
             {
-                if (item.GetType() != _typeToExclude)
+                if (item.GetType() != TypeToExclude)
                 {
                     serializer.Serialize(writer, item);
                 }
@@ -199,7 +199,7 @@ public class CustomJsonConverter : JsonConverter
 
         foreach (var field in fields)
         {
-            if (field.FieldType != _typeToExclude)
+            if (field.FieldType != TypeToExclude)
             {
                 writer.WritePropertyName(field.Name);
 
