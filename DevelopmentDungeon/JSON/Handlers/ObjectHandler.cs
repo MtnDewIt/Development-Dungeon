@@ -24,7 +24,6 @@ public class ObjectHandler
 
     public object Deserialize(string input)
     {
-        // We don't need no deserializer today
-        return null;
+        throw new NotImplementedException("Don't really need to deserialize the data in any specific way yet :/");
     }
 }
