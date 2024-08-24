@@ -3,6 +3,7 @@
     public static void Main()
     {
         //ObjectStructureTest.Execute();
-        StringListTest.Execute();
+        //StringListTest.Execute();
+        UnicodeListTest.Execute();
     }
 }
