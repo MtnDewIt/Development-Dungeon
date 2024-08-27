@@ -2,17 +2,15 @@ using Newtonsoft.Json;
 
 public class CommandListTest
 {
-    public static List<string> CommandTagTable = new List<string>();
-
-    public static void Execute(string[] args)
+    public static void Execute(string inputFile)
     {
-        var jsonData = File.ReadAllText(args[0]);
+        var jsonData = File.ReadAllText(inputFile);
 
-        CommandTagTable = JsonConvert.DeserializeObject<List<string>>(jsonData);
+        var tagTable = JsonConvert.DeserializeObject<List<string>>(jsonData);
 
         var outputList = new List<string>();
 
-        foreach (var tag in CommandTagTable)
+        foreach (var tag in tagTable)
         {
             var tagData = tag.Split('.');
             var tagName = tagData[0];
@@ -35,5 +33,7 @@ public class CommandListTest
         }
 
         File.WriteAllLines($@"output_commands.cmd", outputList);
+
+        Console.WriteLine("Command List Generated Successfully");
     }
 }
