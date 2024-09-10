@@ -1,15 +1,18 @@
 using Newtonsoft.Json;
 
-public class StringListTest
+namespace DevelopmentDungeon.Functions
 {
-    public static List<string> StringTable = new List<string>()
+    public class StringListTest
     {
-        // Insert Data Here :/
-    };
-
-    public static void Execute()
-    {
-        var jsonData = JsonConvert.SerializeObject(StringTable, Formatting.Indented);
-        File.WriteAllText("ms23_strings.json", jsonData);
+        public static List<string> StringTable = new List<string>()
+        {
+            // Insert Data Here :/
+        };
+    
+        public static void Execute()
+        {
+            var jsonData = JsonConvert.SerializeObject(StringTable, Formatting.Indented);
+            File.WriteAllText("ms23_strings.json", jsonData);
+        }
     }
 }
