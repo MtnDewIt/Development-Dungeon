@@ -25,6 +25,16 @@ namespace DevelopmentDungeon.CrashReportConverter.Reports
         public AdditionalInfo additional_info { get; set; }
         public string screenshot { get; set; }
 
+        public enum GameMode : int
+        {
+            none = 0,
+            campaign = 1,
+            multiplayer = 2,
+            mainmenu = 3,
+            theater = 4,
+            shared = 5,
+        }
+
         public class Session
         {
             public string life_cycle_state { get; set; }

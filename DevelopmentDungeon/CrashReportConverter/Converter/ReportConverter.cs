@@ -16,7 +16,7 @@ namespace DevelopmentDungeon.CrashReportConverter.Converter
             report.scenario = debugReport.scenario;
             report.dedicated = false;
             report.map_loading = false;
-            report.game_mode = ConvertDebugGameMode(debugReport.game_mode);
+            report.game_mode = ((CrashReport.GameMode)debugReport.game_mode).ToString();
             report.game_engine = debugReport.game_engine;
             report.game_time = 69420;
             report.game_variant = debugReport.game_variant;
@@ -31,26 +31,6 @@ namespace DevelopmentDungeon.CrashReportConverter.Converter
             report.screenshot = ConvertImageData(imagePath);
 
             return report;
-        }
-
-        public static string ConvertDebugGameMode(int debugGameMode)
-        {
-            // TODO: Figure what enum this is referencing internally
-            switch (debugGameMode)
-            {
-                case 0:
-                    return "";
-                case 1:
-                    return "";
-                case 2:
-                    return "multiplayer";
-                case 3:
-                    return "";
-                case 4:
-                    return "";
-                default:
-                    return "";
-            }
         }
 
         public static string GetModName(DebugCrashReport.DebugModInfo modInfo)
