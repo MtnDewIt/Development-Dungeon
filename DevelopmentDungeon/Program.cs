@@ -1,4 +1,5 @@
-﻿using DevelopmentDungeon.Functions;
+﻿using DevelopmentDungeon.CrashReportConverter;
+using DevelopmentDungeon.Functions;
 
 namespace DevelopmentDungeon
 {
@@ -7,12 +8,13 @@ namespace DevelopmentDungeon
         public static void Main(string[] args)
         {
             Console.WriteLine("Welcome to the Development Dungeon\n");
-            Console.WriteLine("Choose your poison: \n");
+            Console.WriteLine("Pick your poison: \n");
             Console.WriteLine("1: Object Structure Test (Basic object serialization into JSON)\n");
             Console.WriteLine("2: String List Test (Converts a String List into JSON)\n");
             Console.WriteLine("3: Unicode String List Test (Converts String Tuples into a UnicodeStringData list, then converts it to JSON)\n");
             Console.WriteLine("4: Forge Palette Test (Converts a string list into forge palette commands for use in TagTool)\n");
             Console.WriteLine("5: Command List Test (Converts the specified tag list into a list of TagTool commands)\n");
+            Console.WriteLine("6: Crash Report Converter (Converts the specified debug crash report into a crash report compatible with release)\n");
     
             var poison = Console.ReadLine();
     
@@ -34,6 +36,13 @@ namespace DevelopmentDungeon
                     Console.WriteLine("Specify the file you would like to convert: \n");
                     var inputFile = Console.ReadLine();
                     CommandListTest.Execute(inputFile);
+                    break;
+                case 6:
+                    Console.WriteLine("Specify the debug crash dump you would like to convert: \n");
+                    var debugCrash = Console.ReadLine();
+                    Console.WriteLine("Specify the image you would like to include with the report: \n");
+                    var imageFile = Console.ReadLine();
+                    CrashReportHandler.Execute(debugCrash, imageFile);
                     break;
                 default:
                     Console.WriteLine("Wise Choice");
