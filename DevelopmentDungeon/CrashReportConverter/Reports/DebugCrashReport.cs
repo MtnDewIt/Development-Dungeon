@@ -19,11 +19,11 @@ namespace DevelopmentDungeon.CrashReportConverter.Reports
         public string tag_cache_sha1_hash { get; set; }
         public long player_uid { get; set; }
         public string[] tag_history { get; set; }
-        public DebugModuleDump module { get; set; }
-        public DebugCacheTagGlobals cache_tag_globals { get; set; }
-        public DebugModInfo mod { get; set; }
-        public List<DebugStackFrame> stack { get; set; }
-        public DebugRegisterDump registers { get; set; }
+        public ModuleDump module { get; set; }
+        public CacheTagGlobals cache_tag_globals { get; set; }
+        public ModInfo mod { get; set; }
+        public List<StackFrame> stack { get; set; }
+        public RegisterDump registers { get; set; }
         
         public class DebugSession
         {
@@ -33,28 +33,7 @@ namespace DevelopmentDungeon.CrashReportConverter.Reports
             public int num_players { get; set; }
         }
     
-        public class DebugStackFrame
-        {
-            public string address { get; set; }
-            public string name { get; set; }
-            public string line { get; set; }
-        }
-    
-        public class DebugRegisterDump
-        {
-            public string EAX { get; set; }
-            public string EBX { get; set; }
-            public string ECX { get; set; }
-            public string EDX { get; set; }
-            public string ESI { get; set; }
-            public string EDI { get; set; }
-            public string EIP { get; set; }
-            public string ESP { get; set; }
-            public string EBP { get; set; }
-            public string EFL { get; set; }
-        }
-    
-        public class DebugModuleDump
+        public class ModuleDump
         {
             public string address { get; set; }
             public string range { get; set; }
@@ -62,7 +41,7 @@ namespace DevelopmentDungeon.CrashReportConverter.Reports
             public string path { get; set; }
         }
     
-        public class DebugCacheTagGlobals
+        public class CacheTagGlobals
         {
             public long loaded_instance_count { get; set; }
             public long total_instance_count { get; set; }
@@ -75,7 +54,7 @@ namespace DevelopmentDungeon.CrashReportConverter.Reports
             public ulong data_memory_used_size { get; set; }
         }
     
-        public class DebugModInfo
+        public class ModInfo
         {
             public string hash { get; set; }
             public string name { get; set; }

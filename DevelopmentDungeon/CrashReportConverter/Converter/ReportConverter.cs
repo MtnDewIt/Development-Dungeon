@@ -6,36 +6,30 @@ namespace DevelopmentDungeon.CrashReportConverter.Converter
     {
         public static CrashReport ConvertCrashReport(DebugCrashReport debugReport, string imagePath)
         {
-            var report = new CrashReport();
-
-            report.timestamp = DateTime.UtcNow.ToFileTime();
-            report.build = debugReport.build.Split(" - ")[0];
-            report.build_date = debugReport.build.Split(" - ")[1];
-            report.player_uid = debugReport.player_uid.ToString("X");
-            report.player_name = "Dequarious Jerabell"; 
-            report.scenario = debugReport.scenario;
-            report.dedicated = false;
-            report.map_loading = false;
-            report.game_mode = ((CrashReport.GameMode)debugReport.game_mode).ToString();
-            report.game_engine = debugReport.game_engine;
-            report.game_time = 69420;
-            report.game_variant = debugReport.game_variant;
-            report.game_mod = GetModName(debugReport.mod);
-            report.mainmenu_mod = GetModName(debugReport.mod);
-            report.session = ConvertDebugSession(debugReport.session);
-            report.info = debugReport.info;
-            report.tag_history = debugReport.tag_history;
-            report.stack = ConvertDebugStackFrames(debugReport.stack);
-            report.registers = ConvertDebugRegisters(debugReport.registers);
-            report.additional_info = ConvertAdditionalInfo(debugReport.cache_tag_globals);
-            report.screenshot = ConvertImageData(imagePath);
-
-            return report;
-        }
-
-        public static string GetModName(DebugCrashReport.DebugModInfo modInfo)
-        {
-            return modInfo != null ? modInfo.name : "";
+            return new CrashReport()
+            {
+                timestamp = DateTime.UtcNow.ToFileTime(),
+                build = debugReport.build.Split(" - ")[0],
+                build_date = debugReport.build.Split(" - ")[1],
+                player_uid = debugReport.player_uid.ToString("X"),
+                player_name = "unknown_value",
+                scenario = debugReport.scenario,
+                dedicated = false,
+                map_loading = false,
+                game_mode = ((CrashReport.GameMode)debugReport.game_mode).ToString(),
+                game_engine = debugReport.game_engine,
+                game_time = 69420,
+                game_variant = debugReport.game_variant,
+                game_mod = debugReport.mod != null ? debugReport.mod.name : "",
+                mainmenu_mod = debugReport.mod != null ? debugReport.mod.name : "",
+                session = ConvertDebugSession(debugReport.session),
+                info = debugReport.info,
+                tag_history = debugReport.tag_history,
+                stack = debugReport.stack,
+                registers = debugReport.registers,
+                additional_info = ConvertAdditionalInfo(debugReport.cache_tag_globals),
+                screenshot = ConvertImageData(imagePath),
+            };
         }
 
         public static CrashReport.Session ConvertDebugSession(DebugCrashReport.DebugSession debugSession)
@@ -48,48 +42,12 @@ namespace DevelopmentDungeon.CrashReportConverter.Converter
             };
         }
 
-        public static List<CrashReport.StackFrame> ConvertDebugStackFrames(List<DebugCrashReport.DebugStackFrame> debugStackFrames)
-        {
-            var stackFrames = new List<CrashReport.StackFrame>();
-
-            foreach (var debugFrame in debugStackFrames)
-            {
-                var frame = new CrashReport.StackFrame
-                {
-                    address = debugFrame.address,
-                    name = debugFrame.name,
-                    line = debugFrame.line,
-                };
-
-                stackFrames.Add(frame);
-            }
-
-            return stackFrames;
-        }
-
-        public static CrashReport.RegisterDump ConvertDebugRegisters(DebugCrashReport.DebugRegisterDump debugRegisters)
-        {
-            return new CrashReport.RegisterDump
-            {
-                EAX = debugRegisters.EAX,
-                EBX = debugRegisters.EBX,
-                ECX = debugRegisters.ECX,
-                EDX = debugRegisters.EDX,
-                ESI = debugRegisters.ESI,
-                EDI = debugRegisters.EDI,
-                EIP = debugRegisters.EIP,
-                ESP = debugRegisters.ESP,
-                EBP = debugRegisters.EBP,
-                EFL = debugRegisters.EFL,
-            };
-        }
-
-        public static CrashReport.AdditionalInfo ConvertAdditionalInfo(DebugCrashReport.DebugCacheTagGlobals debugCacheTagGlobals)
+        public static CrashReport.AdditionalInfo ConvertAdditionalInfo(DebugCrashReport.CacheTagGlobals debugCacheTagGlobals)
         {
             return new CrashReport.AdditionalInfo
             {
                 os = "Windows XP SP3",
-                cpu = "AMD Athlon Silver 3050U",
+                cpu = "AMD Athlon 64 X2 3800+",
                 gpu = "NVIDIA GeForce 7900 GS",
                 gpu_driver = "69.4.20.0410",
                 mem_avail_physical = debugCacheTagGlobals.physical_memory_size - debugCacheTagGlobals.physical_memory_used,
@@ -107,10 +65,8 @@ namespace DevelopmentDungeon.CrashReportConverter.Converter
                 
                 return Convert.ToBase64String(imageBuffer);
             }
-            else
-            {
-                return "";
-            }
+
+            return "";
         }
     }
 }
