@@ -15,6 +15,7 @@ namespace DevelopmentDungeon
             Console.WriteLine("4: Forge Palette Test (Converts a string list into forge palette commands for use in TagTool)\n");
             Console.WriteLine("5: Command List Test (Converts the specified tag list into a list of TagTool commands)\n");
             Console.WriteLine("6: Crash Report Converter (Converts the specified debug crash report into a crash report compatible with release)\n");
+            Console.WriteLine("7: Mass File Renamer (Remove the specified substring from the file name of each file in the specified path)\n");
     
             var poison = Console.ReadLine();
     
@@ -43,6 +44,9 @@ namespace DevelopmentDungeon
                     Console.WriteLine("Specify the image you would like to include with the report: \n");
                     var imageFile = Console.ReadLine();
                     CrashReportHandler.Execute(debugCrash, imageFile);
+                    break;
+                case 7:
+                    RenameFileTest.Execute();
                     break;
                 default:
                     Console.WriteLine("Wise Choice");
