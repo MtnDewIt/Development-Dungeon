@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ResourceDictionary x:Class="Bonobo.NormalPlugin.Generic" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:normalplugin="clr-namespace:Bonobo.NormalPlugin;assembly=BonoboTest">
+<ResourceDictionary x:Class="Bonobo.NormalPlugin.Generic" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <ResourceDictionary.MergedDictionaries>
-    <ResourceDictionary Source="pack://application:,,,/BonoboTest;component/TagFileList/Themes/Generic.xaml" />
+    <ResourceDictionary Source="/BonoboTest;component/TagFileList/Themes/Generic.xaml" />
   </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

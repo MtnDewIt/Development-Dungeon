@@ -1,6 +1,6 @@
 using System.Windows;
 
-namespace BonoboTest.TagFileList
+namespace Bonobo.Plugins.TagFileList
 {
     public class Generic : ResourceDictionary
     {
