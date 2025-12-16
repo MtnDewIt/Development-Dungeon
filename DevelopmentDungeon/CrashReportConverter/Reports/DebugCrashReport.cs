@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace DevelopmentDungeon.CrashReportConverter.Reports
 {
     public class DebugCrashReport

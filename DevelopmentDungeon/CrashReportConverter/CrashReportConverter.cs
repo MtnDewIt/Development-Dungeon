@@ -1,6 +1,7 @@
 using DevelopmentDungeon.CrashReportConverter.Reports;
 using DevelopmentDungeon.CrashReportConverter.Converter;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace DevelopmentDungeon.CrashReportConverter
 {

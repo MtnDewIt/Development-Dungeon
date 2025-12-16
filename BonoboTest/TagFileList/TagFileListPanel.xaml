@@ -1,0 +1,344 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="Bonobo.Plugins.TagFileList.TagFileListPanel" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Bonobo.Plugins.TagFileList" xmlns:bonobo="clr-namespace:Bonobo.Shared;assembly=BonoboInterfaces" xmlns:corinth="clr-namespace:Corinth.UI.Wpf;assembly=Corinth.Core.Wpf" xmlns:icons="clr-namespace:Corinth.UI.Wpf.Icons;assembly=Corinth.Core.Wpf" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" x:Name="userControl" Background="#FFD4D4D4" FontFamily="Segoe UI" Loaded="UserControl_Loaded">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <Style x:Key="FindSearchNowText" TargetType="{x:Type TextBox}">
+        <Setter Property="BorderBrush" Value="#FF333333" />
+        <Setter Property="BorderThickness" Value="2,2,2,2" />
+        <Style.Triggers>
+          <DataTrigger Value="False" Binding="{Binding Path=DoesSearchBoxContainsUserText, ElementName=userControl}">
+            <Setter Property="Foreground" Value="#FF808080" />
+          </DataTrigger>
+        </Style.Triggers>
+      </Style>
+      <icons:FilePathToIconConverter x:Key="FileIconConverter" />
+      <ContextMenu x:Key="ContextMenu" />
+      <local:IndentMultiSelectTreeViewItemConverter x:Key="IndentMultiSelectTreeViewItemConverter" />
+      <ControlTemplate x:Key="TreeViewItemControlTemplate_Bungie" TargetType="{x:Type local:MultiSelectTreeViewItem}">
+        <Grid Background="#00FFFFFF">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding Path=Depth, Converter={StaticResource IndentMultiSelectTreeViewItemConverter}}" />
+            <ColumnDefinition MinWidth="12" Width="Auto" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <Border Name="Bd" SnapsToDevicePixels="True" Grid.Column="2" BorderThickness="0" Grid.ColumnSpan="2">
+            <ContentPresenter Name="PART_Header" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" Content="{TemplateBinding ContentControl.Content}" ContentSource="Content" ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" />
+          </Border>
+          <ToggleButton Name="Expander" Grid.Column="1" ClickMode="Press" Width="12" Height="12" HorizontalAlignment="Left" Margin="1,0,2,0" IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}}">
+            <FrameworkElement.Style>
+              <Style TargetType="{x:Type ToggleButton}">
+                <Setter Property="Focusable" Value="False" />
+                <Setter Property="Width" Value="19" />
+                <Setter Property="Height" Value="13" />
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                      <Border Width="12" Height="12" Background="#00FFFFFF">
+                        <Border SnapsToDevicePixels="True" Width="10" Height="10" BorderBrush="{x:Null}" Background="{x:Null}">
+                          <Path Name="ExpandPath" Fill="#FF555555" Data="M0,5 L3.0018921,2.5023652 L0,0" RenderTransformOrigin="0.5,0.5" StrokeThickness="0" HorizontalAlignment="Center" VerticalAlignment="Center" Stretch="Fill" Height="10" Width="6">
+                            <UIElement.RenderTransform>
+                              <TransformGroup>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                                <SkewTransform AngleX="0" AngleY="0" />
+                                <RotateTransform Angle="0" />
+                                <TranslateTransform X="0" Y="0" />
+                              </TransformGroup>
+                            </UIElement.RenderTransform>
+                          </Path>
+                        </Border>
+                      </Border>
+                      <ControlTemplate.Triggers>
+                        <Trigger Property="ToggleButton.IsChecked" Value="True">
+                          <Setter TargetName="ExpandPath" Property="RenderTransform">
+                            <Setter.Value>
+                              <TransformGroup>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                                <SkewTransform AngleX="0" AngleY="0" />
+                                <RotateTransform Angle="90" />
+                                <TranslateTransform X="0" Y="0" />
+                              </TransformGroup>
+                            </Setter.Value>
+                          </Setter>
+                        </Trigger>
+                      </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </FrameworkElement.Style>
+          </ToggleButton>
+        </Grid>
+        <ControlTemplate.Triggers>
+          <Trigger Property="local:MultiSelectTreeViewItem.HasItems" Value="False">
+            <Setter TargetName="Expander" Property="UIElement.Visibility" Value="Hidden" />
+          </Trigger>
+          <MultiTrigger>
+            <MultiTrigger.Conditions>
+              <Condition Property="ListBoxItem.IsSelected" Value="True" />
+              <Condition Property="local:MultiSelectTreeViewItem.IsSelectionActive" Value="False" />
+            </MultiTrigger.Conditions>
+            <Setter Property="Control.Foreground" Value="#FFFFFFFF" />
+            <Setter TargetName="Bd" Property="Border.Background" Value="{StaticResource {x:Static corinth:IconResources.DefaultSelectedBackgroundColorKey}}" />
+          </MultiTrigger>
+          <Trigger Property="UIElement.IsEnabled" Value="False">
+            <Setter Property="Control.Foreground" Value="{StaticResource {x:Static SystemColors.GrayTextBrushKey}}" />
+          </Trigger>
+        </ControlTemplate.Triggers>
+      </ControlTemplate>
+      <DataTemplate x:Key="TagInfoItemWithStatus">
+        <corinth:SourceControlBorder ToolTipService.InitialShowDelay="100" State="{Binding State, Converter={bonobo:SourceControlStateConverter}}" IsWritable="{Binding IsWritable}" IsUpToDate="{Binding IsUpToDate}" IsSelected="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" CheckedOutToolTip="{Binding CheckedOutToolTip}" corinth:DragDropHelper.DragCommand="{Binding DragTagInfoCommand, ElementName=userControl}">
+          <StackPanel Orientation="Horizontal">
+            <Button DockPanel.Dock="Right" VerticalAlignment="Center" ToolTip="Show in tree" Margin="0,1,2,0" Width="18" Height="18" Style="{StaticResource {x:Static corinth:ButtonResources.SearchButtonStyleKey}}" Tag="{Binding}" Click="ButtonFindInTreeView_Click" />
+            <Rectangle Width="16" Height="16" Margin="1,0,2,0" SnapsToDevicePixels="True" Fill="{Binding Path=RelativePathWithExtension, Converter={StaticResource FileIconConverter}}" />
+            <TextBlock SnapsToDevicePixels="True" Margin="0,0,5,0" VerticalAlignment="Center" Padding="0,0,5,0" ToolTipService.InitialShowDelay="50" ToolTipService.Placement="Relative" Text="{Binding Path=ShortNameWithExtension}" Tag="{Binding}" ToolTip="{Binding Path=RelativePathWithExtension}" />
+            <corinth:SourceControlIcon Width="14" Height="14" HorizontalAlignment="Right" State="{Binding State, Converter={bonobo:SourceControlStateConverter}}" IsGenerated="{Binding IsGenerated}" IsWritable="{Binding IsWritable}" />
+          </StackPanel>
+        </corinth:SourceControlBorder>
+      </DataTemplate>
+      <Style x:Key="TagFileListFileContainerStyle" TargetType="{x:Type local:MultiSelectTreeViewItem}">
+        <Setter Property="Template" Value="{StaticResource TreeViewItemControlTemplate_Bungie}" />
+        <Setter Property="Background" Value="#00FFFFFF" />
+      </Style>
+      <Style x:Key="TagInfoContainerStyle" TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Background" Value="#00FFFFFF" />
+      </Style>
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <UIElement.CommandBindings>
+    <CommandBinding Command="NavigationCommands.Refresh" Executed="CommandRefresh_Executed" />
+  </UIElement.CommandBindings>
+  <DockPanel LastChildFill="True">
+    <DockPanel Dock="Top" Margin="10,10,10,5">
+      <Button Name="buttonHelp" DockPanel.Dock="Right" Padding="0" Width="18" Height="18" BorderThickness="0,0,0,0" VerticalAlignment="Center" Margin="5,0,0,0" HorizontalAlignment="Left" Style="{StaticResource {x:Static corinth:ButtonResources.HelpButtonStyleKey}}" Click="buttonHelp_Click" PreviewMouseDown="buttonHelp_PreviewMouseDown" />
+      <Popup Name="popupHelp" Placement="Right" PopupAnimation="Fade">
+        <Border Background="#FFFFFFFF" BorderBrush="#FF4D4D4D" BorderThickness="1" Padding="2">
+          <TextBlock Width="272.83" Height="305.363333333333" FontFamily="Segoe UI">
+            <Run Text="Tag Search Advanced Options:" />
+            <LineBreak />
+            <LineBreak />
+            <Run Text="Separate search items with a space ( ) or a pipe(|)." />
+            <LineBreak />
+            <Run Text="Items separated by a space( ) will be ANDed together." />
+            <LineBreak />
+            <Run Text="Items separated by a pipe(|) will be ORed together." />
+            <LineBreak />
+            <LineBreak />
+            <Run Text="All ANDs occur before any ORs." />
+            <LineBreak />
+            <Run Text="Example One:" />
+            <LineBreak />
+            <Run Text="a|b c|d e f" />
+            <LineBreak />
+            <Run Text="will be grouped as " />
+            <LineBreak />
+            <Run Text="(a) or (b and c) or (d and e and f)" />
+            <LineBreak />
+            <LineBreak />
+            <Run Text="Specify the end of a string with a dollar($)." />
+            <LineBreak />
+            <Run Text="Specify the start of a string with a caret(^)." />
+            <LineBreak />
+            <Run Text="The start or end of a string may be the start or end" />
+            <LineBreak />
+            <Run Text="of a tag name or a tag extension or both." />
+            <LineBreak />
+            <LineBreak />
+            <Run Text="Example Two: .scenario$ will include armory.scenario," />
+            <LineBreak />
+            <Run Text="and will exclude armory.scenario_structure_bsp." />
+            <LineBreak />
+            <LineBreak />
+            <Run Text="Example Three: ^model will include brute.model as well" />
+            <LineBreak />
+            <Run Text="as brute.model_animation_graph but it will exclude" />
+            <LineBreak />
+            <Run Text="brute.render_model." />
+          </TextBlock>
+        </Border>
+      </Popup>
+      <Button DockPanel.Dock="Right" Padding="0,0,0,0" VerticalAlignment="Center" Width="18" Height="18" Margin="5,0,0,0" BorderThickness="0,0,0,0" BorderBrush="#FF333333" Style="{StaticResource {x:Static corinth:ButtonResources.CloseButtonStyleKey}}" Click="buttonFindClear_Click">
+        <Control.Background>
+          <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFF9F9F9" Offset="0" />
+            <GradientStop Color="#FFD4D4D4" Offset="1" />
+          </LinearGradientBrush>
+        </Control.Background>
+      </Button>
+      <TextBox Name="txtFind" Style="{StaticResource FindSearchNowText}" Text="&lt;search for tag&gt;" BorderThickness="1,1,1,1" Padding="1,1,1,1" BorderBrush="#FF4D4D4D" GotFocus="txtFind_GotFocus" LostFocus="txtFind_LostFocus" TextChanged="txtFind_TextChanged" KeyDown="txtFind_KeyDown" />
+    </DockPanel>
+    <DockPanel Dock="Left" Margin="0,5,0,0">
+      <TextBlock Name="lblSearchError" Margin="4,2,4,2" Foreground="#FFE08300" DockPanel.Dock="Top" Visibility="{Binding Path=IsShowingSearchError, ElementName=userControl, Converter={corinth:VisibilityConverter}}" />
+      <TabControl Name="tabControl" TabStripPlacement="Top" Background="#FF969696" BorderBrush="#FF4D4D4D" Style="{StaticResource {x:Static corinth:ButtonResources.BungieTabControlStyleKey}}" SelectionChanged="tabControl_SelectionChanged">
+        <TabItem Name="tabFileTree" Header="Tag Files" Background="#FF7C7C7C" BorderBrush="#FF4D4D4D" Padding="10,2,12,2" Margin="0,-2,0,-1" Style="{StaticResource {x:Static corinth:ButtonResources.BungieTabItemStyleKey}}" MinWidth="80" FocusManager.IsFocusScope="False">
+          <local:MultiSelectTreeView x:Name="tree" local:MultiSelectTreeViewItem.PreviewExpanded="tree_PreviewExpanded" local:MultiSelectTreeViewItem.PreviewCollapsed="tree_PreviewCollapsed" SelectionChanged="tree_SelectionChanged" MouseDoubleClick="tree_MouseDoubleClick" ContextMenuOpening="tree_ContextMenuOpening" KeyDown="tree_KeyDown" MinHeight="200" Margin="2,2,2,2" Background="#FFFFFFFF" BorderThickness="1,1,1,1" BorderBrush="#FF4D4D4D" ItemContainerStyle="{StaticResource TagFileListFileContainerStyle}" TextSearch.TextPath="Name" ContextMenu="{StaticResource ResourceKey=ContextMenu}">
+            <FrameworkElement.Resources>
+              <ResourceDictionary>
+                <DataTemplate x:Key="{DataTemplateKey {x:Type local:TagFileListFile}}" DataType="{x:Type local:TagFileListFile}">
+                  <corinth:SourceControlBorder ToolTipService.InitialShowDelay="100" State="{Binding State, Converter={bonobo:SourceControlStateConverter}}" IsWritable="{Binding IsWritable}" IsUpToDate="{Binding IsUpToDate}" IsSelected="{Binding IsSelected, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}}" CheckedOutToolTip="{Binding CheckedOutToolTip}" corinth:DragDropHelper.DragCommand="{Binding DragTagFileListFileCommand, ElementName=userControl}">
+                    <StackPanel Orientation="Horizontal" Margin="0,1,0,1">
+                      <Rectangle Width="16" Height="16" Margin="1,0,2,0" SnapsToDevicePixels="True" Fill="{Binding Path=FullPath, Converter={StaticResource FileIconConverter}}" />
+                      <TextBlock SnapsToDevicePixels="True" Margin="0,0,5,0" VerticalAlignment="Center" HorizontalAlignment="Stretch" Padding="0,0,5,0" Text="{Binding Path=Name}" />
+                      <corinth:SourceControlIcon Width="14" Height="14" HorizontalAlignment="Right" State="{Binding State, Converter={bonobo:SourceControlStateConverter}}" IsWritable="{Binding IsWritable}" IsGenerated="{Binding IsGenerated}" />
+                    </StackPanel>
+                  </corinth:SourceControlBorder>
+                </DataTemplate>
+                <DataTemplate x:Key="{DataTemplateKey {x:Type local:TagFileListFolder}}" DataType="{x:Type local:TagFileListFolder}">
+                  <Grid Margin="0,1,0,1">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                      <Rectangle Width="16" Height="16" Margin="1,0,2,0" SnapsToDevicePixels="True" Fill="{StaticResource {x:Static corinth:IconResources.FolderIconKey}}" />
+                      <TextBlock SnapsToDevicePixels="True" VerticalAlignment="Center" Padding="0,0,5,0" Text="{Binding Path=Name}" />
+                    </StackPanel>
+                  </Grid>
+                </DataTemplate>
+              </ResourceDictionary>
+            </FrameworkElement.Resources>
+          </local:MultiSelectTreeView>
+        </TabItem>
+        <TabItem Name="tabSearchResults" Header="Search" Background="#FF7C7C7C" BorderBrush="#FF4D4D4D" Padding="10,2,12,2" Margin="0,-2,0,-1" Style="{StaticResource {x:Static corinth:ButtonResources.BungieTabItemStyleKey}}" MinWidth="80">
+          <DockPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top" Margin="2">
+              <TextBlock Margin="4,0,4,0" VerticalAlignment="Center">Sorting:</TextBlock>
+              <ComboBox Name="listSearchResultsSorting" Width="80" Margin="4,0,4,0" VerticalAlignment="Center" DisplayMemberPath="Name" SelectionChanged="listSearchResultsSorting_SelectionChanged" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Visibility="{Binding Path=IsShowingSearchResults, ElementName=userControl, Converter={corinth:VisibilityConverter}}">
+              <TextBlock Margin="4,2,4,2" VerticalAlignment="Center" Visibility="{Binding Path=IsSearchInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenTrue}}">
+                <InlineUIContainer>
+                  <TextBlock Text="{Binding Path=Items.Count, ElementName=listSearchResults}" />
+                </InlineUIContainer>
+                <Run Text=" items found" />
+              </TextBlock>
+              <TextBlock Margin="4,2,4,2" VerticalAlignment="Center" Text="Searching..." Visibility="{Binding Path=IsSearchInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenFalse}}" />
+            </StackPanel>
+            <Grid MinHeight="200" Margin="2,2,2,2" Background="#FFD4D4D4">
+              <Rectangle VerticalAlignment="Stretch" Fill="#FFFFFFFF" Stroke="{x:Null}" />
+              <corinth:RotatingRing IsRotating="{Binding Path=IsSearchInProgress, ElementName=userControl}" Visibility="{Binding Path=IsSearchInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenFalse}}" />
+              <ListBox Name="listSearchResults" MinHeight="200" DockPanel.Dock="Top" SelectionMode="Extended" BorderThickness="1,1,1,1" BorderBrush="#FF4D4D4D" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" ContextMenu="{StaticResource ContextMenu}" ItemContainerStyle="{StaticResource TagInfoContainerStyle}" TextSearch.TextPath="ShortNameWithExtension" Background="{x:Null}" MouseDoubleClick="tagInfoList_MouseDoubleClick" ContextMenuOpening="tagInfoList_ContextMenuOpening" KeyDown="tagInfoList_KeyDown">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Background="#00FFFFFF" corinth:DragDropHelper.DragCommand="{Binding DragTagInfoCommand, ElementName=userControl}">
+                      <Button DockPanel.Dock="Right" VerticalAlignment="Center" ToolTip="Show in tree" Margin="0,1,2,0" Width="18" Height="18" Style="{StaticResource {x:Static corinth:ButtonResources.SearchButtonStyleKey}}" Tag="{Binding}" Click="ButtonFindInTreeView_Click" />
+                      <Rectangle Width="16" Height="16" Margin="1,0,2,0" SnapsToDevicePixels="True" Fill="{Binding Path=RelativePathWithExtension, Converter={StaticResource FileIconConverter}}" />
+                      <TextBlock VerticalAlignment="Center" ToolTipService.InitialShowDelay="50" ToolTipService.Placement="Relative" Text="{Binding Path=ShortNameWithExtension}" Tag="{Binding}" ToolTip="{Binding Path=RelativePathWithExtension}" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <FrameworkElement.Style>
+                  <Style TargetType="{x:Type Control}">
+                    <Style.Triggers>
+                      <DataTrigger Value="True" Binding="{Binding Path=IsSearchInProgress, ElementName=userControl}">
+                        <Setter Property="Background" Value="#00FFFFFF" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </FrameworkElement.Style>
+              </ListBox>
+            </Grid>
+          </DockPanel>
+        </TabItem>
+        <TabItem Name="tabWritable" Header="Editable Tag Files" Background="#FF7C7C7C" BorderBrush="#FF4D4D4D" Padding="10,2,12,2" Margin="0,-2,0,-1" Style="{StaticResource {x:Static corinth:ButtonResources.BungieTabItemStyleKey}}" MinWidth="80">
+          <Border Background="#FFD4D4D4" Margin="2" BorderBrush="#FF000000" BorderThickness="1">
+            <DockPanel>
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top" Margin="2">
+                <TextBlock Margin="4,0,4,0" VerticalAlignment="Center">Sorting:</TextBlock>
+                <ComboBox Name="listWritableSorting" Width="80" Margin="4,0,4,0" VerticalAlignment="Center" DisplayMemberPath="Name" SelectionChanged="listWritableSorting_SelectionChanged" />
+              </StackPanel>
+              <Grid Name="writableGrid" Background="#FFD4D4D4">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="Auto" />
+                  <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <DockPanel Grid.Row="0" Margin="2">
+                  <TextBlock DockPanel.Dock="Top">Checked Out / Scratch:</TextBlock>
+                  <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Visibility="{Binding Path=IsShowingWritableFiles, ElementName=userControl, Converter={corinth:VisibilityConverter}}">
+                    <TextBlock Margin="4,2,4,2" VerticalAlignment="Center" Visibility="{Binding Path=IsFindCheckedOutFilesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenTrue}}">
+                      <InlineUIContainer>
+                        <TextBlock Text="{Binding Path=Items.Count, ElementName=listCheckedOutFiles}" />
+                      </InlineUIContainer>
+                      <Run Text=" items found" />
+                    </TextBlock>
+                    <TextBlock Margin="4,2,4,2" VerticalAlignment="Center" Text="Searching..." Visibility="{Binding Path=IsFindCheckedOutFilesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenFalse}}" />
+                  </StackPanel>
+                  <Grid Margin="2,2,2,2" Background="#FFD4D4D4">
+                    <Rectangle VerticalAlignment="Stretch" Fill="#FFFFFFFF" Stroke="{x:Null}" />
+                    <corinth:RotatingRing IsRotating="{Binding Path=IsFindCheckedOutFilesInProgress, ElementName=userControl}" Visibility="{Binding Path=IsFindCheckedOutFilesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenFalse}}" />
+                    <ListBox Name="listCheckedOutFiles" MinHeight="50" DockPanel.Dock="Top" SelectionMode="Extended" BorderThickness="1,1,1,1" BorderBrush="#FF4D4D4D" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" ContextMenu="{StaticResource ContextMenu}" TextSearch.TextPath="ShortNameWithExtension" ItemTemplate="{StaticResource TagInfoItemWithStatus}" ItemContainerStyle="{StaticResource TagInfoContainerStyle}" Background="{x:Null}" MouseDoubleClick="tagInfoList_MouseDoubleClick" ContextMenuOpening="tagInfoList_ContextMenuOpening" KeyDown="tagInfoList_KeyDown" />
+                  </Grid>
+                </DockPanel>
+                <GridSplitter Grid.Row="1" Margin="0,4,0,4" ResizeDirection="Rows" Height="4" Background="#FFA9A9A9" BorderBrush="#FF808080" BorderThickness="1" SnapsToDevicePixels="True" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" Loaded="writableGridSplitter_Loaded" Unloaded="writableGridSplitter_Unloaded" />
+                <DockPanel Grid.Row="2" Margin="2">
+                  <TextBlock DockPanel.Dock="Top">Writable / Not In Depot:</TextBlock>
+                  <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Visibility="{Binding Path=IsShowingWritableFiles, ElementName=userControl, Converter={corinth:VisibilityConverter}}">
+                    <TextBlock Margin="4,2,4,2" VerticalAlignment="Center" Visibility="{Binding Path=IsFindWritableFilesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenTrue}}">
+                      <InlineUIContainer>
+                        <TextBlock Text="{Binding Path=Items.Count, ElementName=listWritableFiles}" />
+                      </InlineUIContainer>
+                      <Run Text=" items found" />
+                    </TextBlock>
+                    <TextBlock Margin="4,2,4,2" VerticalAlignment="Center" Text="Searching..." Visibility="{Binding Path=IsFindWritableFilesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenFalse}}" />
+                  </StackPanel>
+                  <Grid Margin="2,2,2,2" Background="#FFD4D4D4">
+                    <Rectangle VerticalAlignment="Stretch" Fill="#FFFFFFFF" Stroke="{x:Null}" />
+                    <corinth:RotatingRing IsRotating="{Binding Path=IsFindWritableFilesInProgress, ElementName=userControl}" Visibility="{Binding Path=IsFindWritableFilesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenFalse}}" />
+                    <ListBox Name="listWritableFiles" MinHeight="50" DockPanel.Dock="Top" SelectionMode="Extended" BorderThickness="1,1,1,1" BorderBrush="#FF4D4D4D" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" ContextMenu="{StaticResource ContextMenu}" TextSearch.TextPath="ShortNameWithExtension" ItemTemplate="{StaticResource TagInfoItemWithStatus}" ItemContainerStyle="{StaticResource TagInfoContainerStyle}" Background="{x:Null}" MouseDoubleClick="tagInfoList_MouseDoubleClick" KeyDown="tagInfoList_KeyDown" ContextMenuOpening="tagInfoList_ContextMenuOpening" />
+                  </Grid>
+                </DockPanel>
+              </Grid>
+            </DockPanel>
+          </Border>
+        </TabItem>
+        <TabItem Name="tabFavorites" Background="#FF7C7C7C" BorderBrush="#FF4D4D4D" Padding="10,2,12,2" Margin="0,-2,0,-1" Style="{StaticResource {x:Static corinth:ButtonResources.BungieTabItemStyleKey}}" MinWidth="80">
+          <HeaderedContentControl.Header>
+            <StackPanel Orientation="Horizontal">
+              <TextBlock VerticalAlignment="Center" Margin="0,0,4,0">Favorites</TextBlock>
+              <Image Source="/BonoboTest;component/TagFileList/Images/Star-Favorite.png" Width="18" />
+            </StackPanel>
+          </HeaderedContentControl.Header>
+          <DockPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" DockPanel.Dock="Top" Margin="2">
+              <TextBlock Margin="4,0,4,0" VerticalAlignment="Center">Sorting:</TextBlock>
+              <ComboBox Name="listFavoritesSorting" Width="80" Margin="4,0,4,0" VerticalAlignment="Center" DisplayMemberPath="Name" SelectionChanged="listFavoritesSorting_SelectionChanged" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Visibility="{Binding Path=IsShowingFavorites, ElementName=userControl, Converter={corinth:VisibilityConverter}}">
+              <TextBlock Margin="4,2,4,2" VerticalAlignment="Center" Visibility="{Binding Path=IsFavoritesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenTrue}}">
+                <InlineUIContainer>
+                  <TextBlock Text="{Binding Path=Items.Count, ElementName=listFavorites}" />
+                </InlineUIContainer>
+                <Run Text=" items found" />
+              </TextBlock>
+              <TextBlock Margin="4,2,4,2" VerticalAlignment="Center" Text="Searching..." Visibility="{Binding Path=IsFavoritesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenFalse}}" />
+            </StackPanel>
+            <Grid MinHeight="200" Margin="2,2,2,2" Background="#FFD4D4D4">
+              <Rectangle VerticalAlignment="Stretch" Fill="#FFFFFFFF" Stroke="{x:Null}" />
+              <corinth:RotatingRing IsRotating="{Binding Path=IsFavoritesInProgress, ElementName=userControl}" Visibility="{Binding Path=IsFavoritesInProgress, ElementName=userControl, Converter={corinth:VisibilityConverter ConversionMode=CollapsedWhenFalse}}" />
+              <ListBox Name="listFavorites" MinHeight="200" DockPanel.Dock="Top" SelectionMode="Extended" BorderThickness="1,1,1,1" BorderBrush="#FF4D4D4D" ScrollViewer.HorizontalScrollBarVisibility="Auto" HorizontalContentAlignment="Stretch" ContextMenu="{StaticResource ContextMenu}" ItemContainerStyle="{StaticResource TagInfoContainerStyle}" TextSearch.TextPath="ShortNameWithExtension" Background="{x:Null}" MouseDoubleClick="tagInfoList_MouseDoubleClick" ContextMenuOpening="tagInfoList_ContextMenuOpening" KeyDown="tagInfoList_KeyDown">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Background="#00FFFFFF" corinth:DragDropHelper.DragCommand="{Binding DragTagInfoCommand, ElementName=userControl}">
+                      <Button DockPanel.Dock="Right" VerticalAlignment="Center" ToolTip="Show in tree" Margin="0,1,2,0" Width="18" Height="18" Style="{StaticResource {x:Static corinth:ButtonResources.SearchButtonStyleKey}}" Tag="{Binding}" Click="ButtonFindInTreeView_Click" />
+                      <Rectangle Width="18" Height="18" Margin="1,0,2,0" SnapsToDevicePixels="True" Fill="{Binding Path=RelativePathWithExtension, Converter={StaticResource FileIconConverter}}" />
+                      <TextBlock VerticalAlignment="Center" ToolTipService.InitialShowDelay="50" ToolTipService.Placement="Relative" Text="{Binding Path=ShortNameWithExtension}" Tag="{Binding}" ToolTip="{Binding Path=RelativePathWithExtension}" />
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <FrameworkElement.Style>
+                  <Style TargetType="{x:Type Control}">
+                    <Style.Triggers>
+                      <DataTrigger Value="True" Binding="{Binding Path=IsFavoritesInProgress, ElementName=userControl}">
+                        <Setter Property="Background" Value="#00FFFFFF" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </FrameworkElement.Style>
+              </ListBox>
+            </Grid>
+          </DockPanel>
+        </TabItem>
+      </TabControl>
+    </DockPanel>
+  </DockPanel>
+</UserControl>

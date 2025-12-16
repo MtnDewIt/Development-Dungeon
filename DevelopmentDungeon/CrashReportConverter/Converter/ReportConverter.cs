@@ -1,4 +1,6 @@
 using DevelopmentDungeon.CrashReportConverter.Reports;
+using System;
+using System.IO;
 
 namespace DevelopmentDungeon.CrashReportConverter.Converter
 {

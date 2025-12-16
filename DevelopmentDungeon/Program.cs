@@ -1,5 +1,6 @@
 ﻿using DevelopmentDungeon.CrashReportConverter;
 using DevelopmentDungeon.Functions;
+using System;
 
 namespace DevelopmentDungeon
 {
