@@ -160,7 +160,7 @@ namespace Bonobo.Plugins.TagFileList
 
     	private bool m_bEverShowedWritableList = false;
 
-    	private readonly TagDatastore tagDatastore = new TagDatastore();
+    	private readonly TagDatastore tagDatastore = new TagDatastore("", "");
 
     	private string lastFilter = "";
 
@@ -442,7 +442,7 @@ namespace Bonobo.Plugins.TagFileList
 
     	private void UserControl_Loaded(object sender, RoutedEventArgs e)
     	{
-    		tagsDirectory = ProjectManager.GetCurrentProjectTagsRoot();
+    		//tagsDirectory = ProjectManager.GetCurrentProjectTagsRoot();
     		tagFileTreeHelper = new TagFileTreeHelper(pluginHost, plugin, tree);
     		tagFileTreeHelper.RefreshTree();
     		IsShowingTagList = true;
@@ -453,7 +453,7 @@ namespace Bonobo.Plugins.TagFileList
     		}
     		else
     		{
-    			SetupWatcherForTagsDirectory();
+    			//SetupWatcherForTagsDirectory();
     		}
     		FavoriteTags.Changed += Favorites_Changed;
     	}
@@ -763,7 +763,7 @@ namespace Bonobo.Plugins.TagFileList
     	private void startSearchTimer_Tick(object sender, EventArgs args)
     	{
     		startSearchTimer.Stop();
-    		StartSearch();
+    		//StartSearch();
     	}
 
     	private void StartSearch()
@@ -1004,7 +1004,7 @@ namespace Bonobo.Plugins.TagFileList
     		tagFileTreeHelper.RefreshFiles(args.FilePaths);
     		if (IsShowingWritableFiles)
     		{
-    			RefreshWritableList();
+    			//RefreshWritableList();
     		}
     	}
 
@@ -1285,7 +1285,7 @@ namespace Bonobo.Plugins.TagFileList
     			IsShowingFavorites = tabControl.SelectedItem == tabFavorites;
     			if (IsShowingWritableFiles)
     			{
-    				RefreshWritableList();
+    				//RefreshWritableList();
     			}
     			if (IsShowingFavorites)
     			{
@@ -1468,21 +1468,21 @@ namespace Bonobo.Plugins.TagFileList
 
     	private void writableGridSplitter_Loaded(object sender, RoutedEventArgs e)
     	{
-    		if (plugin.Settings.WritableSplitterRatio == 0.0)
-    		{
-    			plugin.Settings.WritableSplitterRatio = 1.0;
-    		}
-    		double num = 7.0;
-    		double value = Math.Max(1.0 / num, Math.Min(num, plugin.Settings.WritableSplitterRatio));
-    		writableGrid.RowDefinitions[0].Height = new GridLength(1.0, GridUnitType.Star);
-    		writableGrid.RowDefinitions[2].Height = new GridLength(value, GridUnitType.Star);
+    		//if (plugin.Settings.WritableSplitterRatio == 0.0)
+    		//{
+    		//	plugin.Settings.WritableSplitterRatio = 1.0;
+    		//}
+    		//double num = 7.0;
+    		//double value = Math.Max(1.0 / num, Math.Min(num, plugin.Settings.WritableSplitterRatio));
+    		//writableGrid.RowDefinitions[0].Height = new GridLength(1.0, GridUnitType.Star);
+    		//writableGrid.RowDefinitions[2].Height = new GridLength(value, GridUnitType.Star);
     		listCheckedOutFiles.Focus();
     	}
 
     	private void writableGridSplitter_Unloaded(object sender, RoutedEventArgs e)
     	{
-    		plugin.Settings.WritableSplitterRatio = writableGrid.RowDefinitions[2].Height.Value / writableGrid.RowDefinitions[0].Height.Value;
-    		plugin.SaveSettings();
+    		//plugin.Settings.WritableSplitterRatio = writableGrid.RowDefinitions[2].Height.Value / writableGrid.RowDefinitions[0].Height.Value;
+    		//plugin.SaveSettings();
     	}
 
     	private void listWritableSorting_SelectionChanged(object sender, SelectionChangedEventArgs e)

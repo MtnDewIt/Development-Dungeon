@@ -7,7 +7,6 @@
         xmlns:normal="clr-namespace:Bonobo.Plugins.TagFileList;assembly=NormalPluginTest"
         mc:Ignorable="d" x:Name="root"
         Title="BonoboTest" Height="921" Width="1180">
-    <StackPanel   HorizontalAlignment="Center" VerticalAlignment="Center">
-        
-    </StackPanel>
+    <Grid x:Name="mainGrid">
+    </Grid>
 </Window>

@@ -31,4 +31,8 @@
     <Reference Include="..\Dependencies\Microsoft.WindowsAPICodePack.Shell.dll" Private="false" />
     <Reference Include="..\Dependencies\System.Reactive.dll" Private="false" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TagFileList\Images\star-favorite.png" />
+    <Resource Include="TagFileList\Images\star-non-favorite.png" />
+  </ItemGroup>
 </Project>

@@ -81,13 +81,13 @@ namespace Bonobo.Plugins.TagFileList
     	{
     		this.pluginHost = pluginHost;
     		this.fileListPlugin = fileListPlugin;
-    		ITagInformation tagInfoPlugin = this.pluginHost.FindSingleInterface<ITagInformation>();
-    		IAsyncSourceControlProvider asyncSourceControlProvider = this.pluginHost.FindSingleInterface<IAsyncSourceControlProvider>();
-    		sourceControlStateProvider.Initialize(tagInfoPlugin, asyncSourceControlProvider);
-    		fileSystemStateProvider.Initialize(tagInfoPlugin);
+    		//ITagInformation tagInfoPlugin = this.pluginHost.FindSingleInterface<ITagInformation>();
+    		//IAsyncSourceControlProvider asyncSourceControlProvider = this.pluginHost.FindSingleInterface<IAsyncSourceControlProvider>();
+    		//sourceControlStateProvider.Initialize(tagInfoPlugin, asyncSourceControlProvider);
+    		//fileSystemStateProvider.Initialize(tagInfoPlugin);
     		Tree = tree;
     		dispatcher = Dispatcher.CurrentDispatcher;
-    		tagsDirectory = ProjectManager.GetCurrentProjectTagsRoot();
+    		//tagsDirectory = ProjectManager.GetCurrentProjectTagsRoot();
     	}
 
     	private void ExecuteOnMainThread(ThreadExecuteDelegate methodToExecute)
@@ -420,8 +420,8 @@ namespace Bonobo.Plugins.TagFileList
     		{
     			if (Tree.IsLoaded)
     			{
-    				string currentProjectTagsRoot = ProjectManager.GetCurrentProjectTagsRoot();
-    				TreeRoot = new TagFileListFolder(Path.GetFileName(currentProjectTagsRoot), currentProjectTagsRoot, null);
+    				//string currentProjectTagsRoot = ProjectManager.GetCurrentProjectTagsRoot();
+    				//TreeRoot = new TagFileListFolder(Path.GetFileName(currentProjectTagsRoot), currentProjectTagsRoot, null);
     				Assert.Check(!isExpandingFromSettings);
     				isExpandingFromSettings = true;
     				Tree.ItemContainerGenerator.StatusChanged += tagsRootTviItemContainerGenerator_StatusChanged;
