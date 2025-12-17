@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Window x:Class="Bonobo.Plugins.TagFileList.NewFolderWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="window" Title="Create new folder" Width="260" Height="120" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" xmlns:tagfilelist="clr-namespace:Bonobo.Plugins.TagFileList;assembly=BonoboTest" Loaded="window_Loaded">
+<Window x:Class="Bonobo.Plugins.TagFileList.NewFolderWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" x:Name="window" Title="Create new folder" Width="260" Height="120" WindowStyle="SingleBorderWindow" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" xmlns:tagfilelist="clr-namespace:Bonobo.Plugins.TagFileList;assembly=NormalPluginTest" Loaded="window_Loaded">
   <DockPanel LastChildFill="False">
     <StackPanel DockPanel.Dock="Top">
       <TextBlock Margin="4,4,4,2">Folder name:</TextBlock>

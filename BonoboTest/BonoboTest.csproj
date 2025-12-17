@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
@@ -11,24 +11,12 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="..\Dependencies\BonoboInterfaces.dll" Private="false" />
-    <Reference Include="..\Dependencies\BonoboPluginSystem.dll" Private="false" />
-    <Reference Include="..\Dependencies\Corinth.Core.dll" Private="false" />
-    <Reference Include="..\Dependencies\Corinth.Core.Datastore.dll" Private="false" />
-    <Reference Include="..\Dependencies\Corinth.Core.Wpf.dll" Private="false" />
-    <Reference Include="..\Dependencies\Corinth.Schema.dll" Private="false" />
-    <Reference Include="..\Dependencies\Corinth.SourceDepot.dll" Private="false" />
-    <Reference Include="..\Dependencies\TAE.Shared.dll" Private="false" />
-    <Reference Include="..\Dependencies\TAE.Shared.Tags.dll" Private="false" />
+    <ProjectReference Include="..\NormalPluginTest\NormalPluginTest.csproj" Private="false" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.ServiceModel" Private="false" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="..\Dependencies\Microsoft.Practices.Composite.dll" Private="false" />
-    <Reference Include="..\Dependencies\Microsoft.Practices.Composite.Presentation.dll" Private="false" />
-    <Reference Include="..\Dependencies\Microsoft.WindowsAPICodePack.dll" Private="false" />
-    <Reference Include="..\Dependencies\Microsoft.WindowsAPICodePack.Shell.dll" Private="false" />
-    <Reference Include="..\Dependencies\System.Reactive.dll" Private="false" />
-  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="AfterBuild">
+    <ItemGroup>
+      <Dependencies Include="..\Dependencies\**\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(Dependencies)" DestinationFolder="$(OutDir)%(RecursiveDir)" />
+  </Target>
 </Project>

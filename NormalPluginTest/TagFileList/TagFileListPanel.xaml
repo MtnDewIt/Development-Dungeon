@@ -295,7 +295,7 @@
           <HeaderedContentControl.Header>
             <StackPanel Orientation="Horizontal">
               <TextBlock VerticalAlignment="Center" Margin="0,0,4,0">Favorites</TextBlock>
-              <Image Source="/BonoboTest;component/TagFileList/Images/Star-Favorite.png" Width="18" />
+              <Image Source="/NormalPluginTest;component/TagFileList/Images/Star-Favorite.png" Width="18" />
             </StackPanel>
           </HeaderedContentControl.Header>
           <DockPanel>

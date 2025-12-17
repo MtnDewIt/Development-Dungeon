@@ -5,6 +5,9 @@
   <Project Path="BonoboTest/BonoboTest.csproj">
     <Platform Project="x64" />
   </Project>
+  <Project Path="NormalPluginTest/NormalPluginTest.csproj">
+    <Platform Project="x64" />
+  </Project>
   <Project Path="DevelopmentDungeon/DevelopmentDungeon.csproj">
     <Platform Project="x64" />
   </Project>
